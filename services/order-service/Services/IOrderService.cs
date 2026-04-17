@@ -4,5 +4,6 @@ namespace OrderService.Services;
 
 public interface IOrderService
 {
-    Task<List<CustomerOrder>> GetAllOrders();
+    Task<List<CustomerOrder>> GetAllOrdersAsync();
+    Task<CustomerOrder> CreateOrderAsync(CreateOrderDTO createOrderDTO);
 }

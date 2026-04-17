@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using OrderService.Data;
 using OrderService.Models;
 using OSS = OrderService.Services;
 
@@ -16,6 +17,9 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     }
 );
+
+// DI
+builder.Services.AddAutoMapper(typeof(Program));
 
 // Lifetime for DI
 builder.Services.AddScoped<OSS.IOrderService, OSS.OrderService>();
