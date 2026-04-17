@@ -493,3 +493,4 @@ obj/
 
 # Environment 
 .env
+appsettings.Development.json

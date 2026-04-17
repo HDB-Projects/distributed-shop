@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OrderService.Models;
+using OSS = OrderService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,9 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     }
 );
+
+// Lifetime for DI
+builder.Services.AddScoped<OSS.IOrderService, OSS.OrderService>();
 
 var app = builder.Build();
 
