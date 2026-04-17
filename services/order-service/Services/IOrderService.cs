@@ -4,5 +4,5 @@ namespace OrderService.Services;
 
 public interface IOrderService
 {
-    List<CustomerOrder> GetAllOrders();
+    Task<List<CustomerOrder>> GetAllOrders();
 }

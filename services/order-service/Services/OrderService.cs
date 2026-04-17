@@ -1,4 +1,5 @@
-﻿using OrderService.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using OrderService.Models;
 
 namespace OrderService.Services;
 
@@ -11,8 +12,8 @@ public class OrderService : IOrderService
         _db = db;
     }
 
-    public List<CustomerOrder> GetAllOrders()
+    public async Task<List<CustomerOrder>> GetAllOrders()
     {
-        return _db.CustomerOrders.ToList();
+        return await _db.CustomerOrders.ToListAsync();
     }
 }
