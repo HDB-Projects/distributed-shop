@@ -16,6 +16,7 @@ public class OrderService : IOrderService
         _mapper = mapper;
     }
 
+    // Testmethod for API, to be removed later.
     public async Task<List<CustomerOrder>> GetAllOrdersAsync()
     {
         return await _db.CustomerOrders.ToListAsync();
@@ -23,7 +24,11 @@ public class OrderService : IOrderService
 
     public async Task<CustomerOrder> CreateOrderAsync(CreateOrderDTO createOrderDTO)
     {
-        CustomerOrder customerOrder = _mapper.Map<CustomerOrder>(createOrderDTO);
+        if (createOrderDTO == null)
+            throw new ArgumentNullException(nameof(createOrderDTO));
+
+        CustomerOrder customerOrder = CustomerOrder.Create(createOrderDTO.UserId, createOrderDTO.TotalAmount);
+
         _db.CustomerOrders.Add(customerOrder);
         await _db.SaveChangesAsync();
 
