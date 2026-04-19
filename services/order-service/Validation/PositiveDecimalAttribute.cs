@@ -5,7 +5,7 @@ namespace OrderService.Validation;
 /// <summary>
 /// Validates that the value is a positive decimal number greater than zero.
 /// </summary>
-public class PositiveDecimal : ValidationAttribute
+public class PositiveDecimalAttribute : ValidationAttribute
 {
     /// <summary>
     /// Validates whether the provided value is a positive decimal.
