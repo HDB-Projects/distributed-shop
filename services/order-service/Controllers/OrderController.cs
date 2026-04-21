@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrderService.Models;
-using OrderService.Controllers;
 using OSS = OrderService.Services;
 
 namespace OrderService.Controllers;
@@ -17,28 +16,28 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<CustomerOrder>>> GetAllOrders()
+    public async Task<ActionResult<List<CustomerOrder>>> Get()
     {
         List<CustomerOrder> orders = await _orderService.GetAllOrdersAsync();
         return Ok(orders);
     }
 
-    // [HttpGet("{id}")]
-    // public async Task<ActionResult<CustomerOrder>> GetById(Guid id)
-    // {
-        // var order = await _orderService.GetOrderByIdAsync(id);
+    [HttpGet("{id}")]
+    public async Task<ActionResult<CustomerOrder>> GetById(Guid id)
+    {
+        var order = await _orderService.GetOrderByIdAsync(id);
 
-        // if (order == null)
-        //     return NotFound();
+        if (order == null)
+            return NotFound();
 
-        // return Ok(order);
-    // }
+        return Ok(order);
+    }
 
     [HttpPost]
-    public async Task<ActionResult<CustomerOrder>> CreateOrder(CreateOrderDTO createOrderDTO)
+    public async Task<ActionResult<CustomerOrder>> Create(CreateOrderDto createOrderDto)
     {
-        CustomerOrder order = await _orderService.CreateOrderAsync(createOrderDTO);
+        CustomerOrder order = await _orderService.CreateOrderAsync(createOrderDto);
 
-        return CreatedAtAction(nameof(GetAllOrders), new { id = order.Id }, order);
+        return CreatedAtAction(nameof(GetById), new { id = order.Id }, order);
     }
 }

@@ -21,12 +21,17 @@ public class OrderService : IOrderService
         return await _db.CustomerOrders.ToListAsync();
     }
 
-    public async Task<CustomerOrder> CreateOrderAsync(CreateOrderDTO createOrderDTO)
+    public async Task<CustomerOrder?> GetOrderByIdAsync(Guid id)
     {
-        if (createOrderDTO == null)
-            throw new ArgumentNullException(nameof(createOrderDTO));
+        return await _db.CustomerOrders.FindAsync(id);
+    }
 
-        CustomerOrder customerOrder = CustomerOrder.Create(createOrderDTO.UserId, createOrderDTO.TotalAmount);
+    public async Task<CustomerOrder> CreateOrderAsync(CreateOrderDto createOrderDto)
+    {
+        if (createOrderDto == null)
+            throw new ArgumentNullException(nameof(createOrderDto));
+
+        CustomerOrder customerOrder = CustomerOrder.Create(createOrderDto.UserId, createOrderDto.TotalAmount);
 
         _db.CustomerOrders.Add(customerOrder);
         await _db.SaveChangesAsync();

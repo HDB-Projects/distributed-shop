@@ -3,7 +3,7 @@ using OrderService.Validation;
 
 namespace OrderService.Models;
 
-public class CreateOrderDTO
+public class CreateOrderDto
 {
     [Required]
     public Guid UserId { get; set; }
