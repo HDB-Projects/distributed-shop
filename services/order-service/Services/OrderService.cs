@@ -16,7 +16,6 @@ public class OrderService : IOrderService
         _mapper = mapper;
     }
 
-    // Testmethod for API, to be removed later.
     public async Task<List<CustomerOrder>> GetAllOrdersAsync()
     {
         return await _db.CustomerOrders.ToListAsync();

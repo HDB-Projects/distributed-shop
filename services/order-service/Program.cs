@@ -1,39 +1,49 @@
 using Microsoft.EntityFrameworkCore;
 using OrderService.Data;
-using OrderService.Models;
+using OrderService.Middleware;
 using OSS = OrderService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// --------------------
+// Services
+// --------------------
+
+// Framework Services
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddControllers();
-
+// Infrastructure
 builder.Services.AddDbContext<OrderDbContext>(options => 
     {
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     }
 );
 
-// DI
-builder.Services.AddAutoMapper(typeof(Program));
-
-// Lifetime for DI
+// App
 builder.Services.AddScoped<OSS.IOrderService, OSS.OrderService>();
+
+// Mapping
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// --------------------
+// Middleware Pipeline
+// --------------------
+
+// Global Exception Handling
+app.UseMiddleware<ExceptionMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.MapControllers();
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 app.Run();
