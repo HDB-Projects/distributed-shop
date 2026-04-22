@@ -1,15 +1,18 @@
 ﻿using System.Net;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 
 namespace OrderService.Middleware;
 
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly ILogger<ExceptionMiddleware> _logger;
 
-    public ExceptionMiddleware(RequestDelegate next)
+    public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
     {
         _next = next;
+        _logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -20,6 +23,7 @@ public class ExceptionMiddleware
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Unhandled exception occurred");
             await HandleExceptionAsync(context, ex);
         }
     }
@@ -29,16 +33,24 @@ public class ExceptionMiddleware
         HttpResponse response = context.Response;
         response.ContentType = "application/json";
 
-        response.StatusCode = ex switch
+        int statusCode = ex switch
         {
             ArgumentException => (int)HttpStatusCode.BadRequest,
             InvalidOperationException => (int)HttpStatusCode.BadRequest,
             _ => (int)HttpStatusCode.InternalServerError
         };
-        string result = JsonSerializer.Serialize(new
+
+        response.StatusCode = statusCode;
+
+        ProblemDetails problemDetails= new ProblemDetails
         {
-            message = ex.Message
-        });
+            Status = statusCode,
+            Title = ex.GetType().Name,
+            Detail = ex.Message,
+            Instance = context.Request.Path
+        };
+
+        string result = System.Text.Json.JsonSerializer.Serialize(problemDetails);
 
         return response.WriteAsync(result);
     }
