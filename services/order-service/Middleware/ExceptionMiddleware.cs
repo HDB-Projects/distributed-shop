@@ -50,7 +50,7 @@ public class ExceptionMiddleware
             Instance = context.Request.Path
         };
 
-        string result = System.Text.Json.JsonSerializer.Serialize(problemDetails);
+        string result = JsonSerializer.Serialize(problemDetails);
 
         return response.WriteAsync(result);
     }

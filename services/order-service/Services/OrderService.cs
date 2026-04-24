@@ -8,12 +8,12 @@ namespace OrderService.Services;
 public class OrderService : IOrderService
 {
     private readonly OrderDbContext _db;
-    private readonly IMapper _mapper;
+    // private readonly IMapper _mapper;
 
     public OrderService(OrderDbContext db, IMapper mapper)
     {
         _db = db;
-        _mapper = mapper;
+        // _mapper = mapper;
     }
 
     public async Task<List<CustomerOrder>> GetAllOrdersAsync()
