@@ -46,4 +46,38 @@ public class OrderApiTests
         Assert.That(result, Is.Not.Null);
         Assert.That(result!.TotalAmount, Is.EqualTo(10));
     }
+
+    [Test]
+    public async Task Post_Order_Should_Return_BadRequest_For_Invalid_Data_Zero()
+    {
+        // Arrange
+        CreateOrderDto createOrderDto = new CreateOrderDto
+        {
+            UserId = Guid.NewGuid(),
+            TotalAmount = 0 // Invalid
+        };
+
+        // Act
+        HttpResponseMessage response = await _client.PostAsJsonAsync("/api/order", createOrderDto);
+
+        // Assert
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+    }
+
+    [Test]
+    public async Task Post_Order_Should_Return_BadRequest_For_Invalid_Data_Negative()
+    {
+        // Arrange
+        CreateOrderDto createOrderDto = new CreateOrderDto
+        {
+            UserId = Guid.NewGuid(),
+            TotalAmount = -10 // Invalid
+        };
+
+        // Act
+        HttpResponseMessage response = await _client.PostAsJsonAsync("/api/order", createOrderDto);
+
+        // Assert
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+    }
 }

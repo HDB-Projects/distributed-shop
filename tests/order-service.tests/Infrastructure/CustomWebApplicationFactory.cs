@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using OrderService.Services;
 using OrderService.Data;
 
 namespace OrderService.Tests.Infrastructure;
@@ -10,6 +12,8 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder webHostBuilder)
     {
+        webHostBuilder.UseEnvironment("Testing");
+
         webHostBuilder.ConfigureServices(services =>
         {
             ServiceDescriptor? descriptor = services.SingleOrDefault(d =>
@@ -23,7 +27,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             services.AddDbContext<OrderDbContext>(options =>
             {
                 options.UseInMemoryDatabase("TestDb");
-            });    
+            });
         });
     }
 }
