@@ -6,7 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{58
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "order-service", "order-service", "{6BA2C5F8-8CDC-9D22-C063-7A94EB5993AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderService", "services\order-service\OrderService.csproj", "{466E62BB-4B09-4999-0229-D9209C1A7B8A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderService", "src\services\order-service\OrderService.csproj", "{466E62BB-4B09-4999-0229-D9209C1A7B8A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5CD15D22-ED02-4218-9880-90C6F4992879}"
 EndProject
